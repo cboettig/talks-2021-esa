@@ -1,0 +1,153 @@
+---
+author: "Carl Boettiger"
+institute: "UC Berkeley"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "solarized-light.css"]
+    lib_dir: libs
+    seal: false
+    nature:
+      highlightStyle: "solarized-light"
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(#dev.args=list(bg="transparent"), 
+                      echo = FALSE, 
+                      message=FALSE, 
+                      warning=FALSE,
+                      fig.width=11, 
+                      fig.height=6.5, 
+                      cache = TRUE)
+
+library(tidyverse)
+library(ggthemes)
+library(magick)
+theme_set(theme_solarized(base_size=16))
+scale_colour_discrete <- function(...) scale_colour_solarized()
+scale_fill_discrete <- function(...) scale_fill_solarized()
+pal <- solarized_pal()(6)
+
+txtcolor <- "#586e75"
+
+
+library(patchwork)
+ggimage <- function(path, transparent = FALSE){
+  img <- magick::image_read(path)
+  if(transparent)  img <- magick::image_transparent(img, "white")
+  ggplot2::ggplot() + 
+  ggplot2::annotation_raster(img, 
+                    xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) +
+    theme(axis.line = element_blank(), 
+          panel.background = element_blank(),
+          axis.ticks = element_blank(), 
+          axis.text = element_blank(), 
+          axis.title = element_blank())
+  
+}
+
+ggblank <- function() ggplot() + geom_blank() + 
+  theme(axis.line = element_blank(), panel.background = element_blank())
+
+```
+
+layout: true
+background-color: #fdf6e3
+class: center, top
+
+---
+
+# My talk title here
+
+## Subtitle H2
+
+### H3
+
+#### H4
+
+##### H5 
+
+Text with *emphasis*
+
+<div class="my-footer">
+
+<a href="https://carlboettiger.info"> `r icon::fa("user")` Carl Boettiger</a> | 
+<a href="https://berkeley.edu"> `r icon::fa("briefcase")` UC Berkeley</a> | 
+<a href="https://twitter.com/cboettig"> `r icon::fa("twitter")` @cboettig</a>
+
+</div>
+
+---
+
+# First Slide
+
+.pull-left[
+
+- bulleted list
+- the bullets are invisible
+- that's nicer for centered text
+
+]
+.pull-right[
+
+```{r fig.width=6, fig.height=4}
+ggplot(mtcars, aes(cyl, mpg, fill=as.factor(cyl))) +
+  geom_bar(stat="identity", show.legend = FALSE) + 
+  ggtitle("Not mtcars again!")
+```
+]
+
+
+
+---
+
+# Acknowledgements
+
+.pull-left[
+
+## Group
+
+```{r fig.width=6, fig.height=6}
+(ggimage("../image-library/people/milad.png") +
+ggimage("../image-library/people/millie.png")) / 
+(ggimage("../image-library/people/marcus.jpg") + plot_spacer())
+```
+
+
+
+
+]
+.pull-right[
+
+
+## Funding
+
+```{r fig.width=12, fig.height=6}
+(ggimage("../image-library/sponsors/nsf.png")  +     
+ ggimage("../image-library/sponsors/bids.png", TRUE) +
+ ggimage("../image-library/sponsors/jetstream-logo.svg", TRUE)
+)  /     
+(ggimage("../image-library/sponsors/hellman.png")  +    
+ ggimage("../image-library/sponsors/berkeley.png")
+)
+
+  
+```
+
+
+### Image Credits
+
+```{r fig.width=10, fig.height=2}
+plot_spacer() + 
+  ggimage("../image-library/people/allison_horst_artist.jpg") + xlab("Allison Horst") + 
+  ggimage("../image-library/sponsors/royalsociety.jpg") + ylab("Image Credits")  +
+  ggimage("../image-library/sponsors/noaa.png", TRUE) +
+  plot_spacer() + plot_layout(ncol=5)
+
+```
+
+]
